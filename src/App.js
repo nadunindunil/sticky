@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import Notes from "./components/notes";
-import Clipboard from "./components/clipboard";
+import _Clipboard from "./components/clipboard";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
-      <div className="App container-fluid">
+      <div className="container-fluid">
         
         <div className="row">
           <div className="col-sm">
-            <Clipboard/>
+            <_Clipboard/>
           </div>
           <div className="col-sm">
             <Notes/>

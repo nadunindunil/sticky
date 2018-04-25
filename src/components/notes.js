@@ -12,9 +12,8 @@ export default class Notes extends Component {
       <div>
         <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow low-height">
           <h5 className="my-0 mr-md-auto font-weight-normal">Notes</h5>
-          <a className="btn btn-outline-primary btn-sm" href="#">
-            Sign up
-          </a>
+          <button className="btn btn-outline-secondary btn-circle "><strong>+</strong></button>
+          
         </div>
         <div className="container-fluid">
           <Note />

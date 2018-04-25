@@ -1,10 +1,29 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-export default class Clipboard extends Component {
-  //   static propTypes = {
-  //     prop: PropTypes
-  //   }
+const electron = window.require("electron");
+const clipboard = window.require("electron-clipboard-extended");
+
+export default class _Clipboard extends Component {
+  constructor(props, contect) {
+    super(props);
+    this.state = {
+      Value: electron.clipboard.readText()
+    };
+  }
+
+  componentDidMount() {
+    clipboard
+      .on("text-changed", () => {
+        let currentText = electron.clipboard.readText();
+        this.setState({ Value: currentText });
+      })
+      .startWatching();
+  }
+
+  componentWillUnmount() {
+    clipboard.stopWatching();
+  }
 
   render() {
     return (
@@ -14,9 +33,7 @@ export default class Clipboard extends Component {
         </div>
         <div className="container-fluid">
           <div className="card">
-            <div className="card-body">
-              This is some text within a card body.
-            </div>
+            <div className="card-body">{this.state.Value}</div>
           </div>
         </div>
       </div>

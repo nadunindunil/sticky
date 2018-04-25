@@ -6,6 +6,8 @@ const globalShortcut = electron.globalShortcut;
 const BrowserWindow = electron.BrowserWindow;
 const { Menu, Tray } = require("electron");
 
+const ipc = electron.ipcMain;
+
 const path = require("path");
 const url = require("url");
 var isShown = false;
@@ -51,7 +53,9 @@ function createWindow() {
   tray.setToolTip("Notes app");
   //   tray.setContextMenu(contextMenu)
 
-  globalShortcut.register("CommandOrControl+Alt+Space", () => {
+  mainWindow.hide();
+
+  globalShortcut.register("CommandOrControl+down", () => {
     console.log("inside");
     if (isShown) {
       mainWindow.hide();
@@ -61,6 +65,11 @@ function createWindow() {
       isShown = true;
     }
   });
+
+  
+  // globalShortcut.register("CommandOrControl", () => {
+  //   mainWindow.webContents.send('message', {data: electron.clipboard.readText()});
+  // });
 
   // Emitted when the window is closed.
   mainWindow.on("closed", function() {
