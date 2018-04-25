@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 const electron = window.require("electron");
 const clipboard = window.require("electron-clipboard-extended");
 
-export default class _Clipboard extends Component {
+export default class AppClipboard extends Component {
   constructor(props, contect) {
     super(props);
     this.state = {

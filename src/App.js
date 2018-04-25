@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Notes from "./components/notes";
-import _Clipboard from "./components/clipboard";
+import AppClipboard from "./components/clipboard";
 import "./App.css";
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
         
         <div className="row">
           <div className="col-sm">
-            <_Clipboard/>
+            <AppClipboard/>
           </div>
           <div className="col-sm">
             <Notes/>
