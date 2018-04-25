@@ -1,6 +1,3 @@
-
-
-
 .App {
   text-align: center;
   /* padding-top: 15px; */
@@ -22,7 +19,7 @@
   height: 20px;
 }
 
-.padding-low{
+.padding-low {
   padding-bottom: 10px;
 }
 
@@ -33,8 +30,12 @@
   border-bottom: 1px solid #e5e5e5;
 }
 
-.grey-background{
+.grey-background {
   background-color: rgba(223, 226, 223, 0.133);
 }
 
 /* .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); } */
+
+.pointer {
+  cursor: pointer;
+}
