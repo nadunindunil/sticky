@@ -28,7 +28,7 @@ export default class AppClipboard extends Component {
     return (
       <div>
         <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow low-height">
-          <h5 className="my-0 mr-md-auto font-weight-normal">Clipboard</h5>
+          <h6 className="my-0 mr-md-auto font-weight-normal">Clipboard</h6>
         </div>
         <div className="container-fluid">
           <div className="card">
