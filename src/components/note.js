@@ -2,8 +2,15 @@ import React, { Component } from "react";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faCircle from "@fortawesome/fontawesome-free-solid/faMinusCircle";
 import faWindowClose from "@fortawesome/fontawesome-free-solid/faWindowClose";
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class Note extends Component {
+import * as _canvasActions from '../actions/canvasActions';
+import * as _editStateActions from '../actions/editStateActions';
+
+
+class Note extends Component {
   constructor(props, contect) {
     super(props);
     this.state = {
@@ -21,7 +28,8 @@ export default class Note extends Component {
   };
 
   clickOnNote(){
-    this.props.clickNote(this.props.data);
+    this.props.canvasActions.addCanvasData(this.props.note);
+    this.props.editStateActions.changeState('edit');
   }
 
   render() {
@@ -41,10 +49,29 @@ export default class Note extends Component {
               />
             ) : null}
 
-            {this.props.data}
+            {this.props.note.data}
           </div>
         </div>
       </div>
     );
   }
 }
+
+Note.propTypes = {
+  canvasActions: PropTypes.object.isRequired,
+  editStateActions: PropTypes.object.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+  return { notes: state.notes, canvasData: state.canvasData };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    canvasActions: bindActionCreators(_canvasActions, dispatch),
+    editStateActions: bindActionCreators(_editStateActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Note);
+

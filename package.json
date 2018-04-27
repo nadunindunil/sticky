@@ -15,7 +15,9 @@
     "draft-js": "^0.10.5",
     "electron-clipboard-extended": "^1.1.0",
     "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react-dom": "^16.1.1",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0"
   },
   "homepage": "./",
   "main": "src/electron-starter.js",

@@ -1,13 +1,29 @@
-import React, { Component } from "react";
-import { ContentState, Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import React, { Component } from 'react';
+import {
+  ContentState,
+  Editor,
+  EditorState,
+  RichUtils,
+  convertToRaw
+} from 'draft-js';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
-export default class Canvas extends Component {
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import * as _canvasActions from '../actions/canvasActions';
+
+
+class Canvas extends Component {
   constructor(props) {
     super(props);
     let editorState;
-    if (this.props.textData.trim() !== "") {
-      const processedHTML = DraftPasteProcessor.processHTML(this.props.textData);
+    console.log(this.props.canvasData);
+    if (this.props.canvasData && this.props.canvasData.trim() !== '') {
+      const processedHTML = DraftPasteProcessor.processHTML(
+        this.props.canvasData
+      );
       const contentState = ContentState.createFromBlockArray(processedHTML);
       //move focus to the end.
       editorState = EditorState.createWithContent(contentState);
@@ -16,7 +32,11 @@ export default class Canvas extends Component {
       editorState = EditorState.createEmpty();
     }
     this.state = { editorState: editorState };
-    this.onChange = editorState => this.setState({ editorState });
+    this.onChange = editorState => {
+      this.setState({ editorState });
+      // console.log(editorState);
+      this.props.canvasActions.changeCanvasData(editorState.getCurrentContent().getPlainText());
+    };
   }
 
   render() {
@@ -34,3 +54,16 @@ export default class Canvas extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return { canvasData: state.canvasData.data };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    canvasActions: bindActionCreators(_canvasActions, dispatch)
+  };
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Canvas);
