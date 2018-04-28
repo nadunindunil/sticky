@@ -30,6 +30,7 @@ class Canvas extends Component {
       editorState = EditorState.moveFocusToEnd(editorState);
     } else {
       editorState = EditorState.createEmpty();
+      editorState = EditorState.moveFocusToEnd(editorState);
     }
     this.state = { editorState: editorState };
     this.onChange = editorState => {

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import * as _canvasActions from '../actions/canvasActions';
 import * as _editStateActions from '../actions/editStateActions';
-
+import * as _notesActions from '../actions/notesActions';
 
 class Note extends Component {
   constructor(props, contect) {
@@ -18,6 +18,7 @@ class Note extends Component {
     };
 
     this.clickOnNote = this.clickOnNote.bind(this);
+    this.clickOnDelete = this.clickOnDelete.bind(this);
   }
 
   mouseEnter = () => {
@@ -30,6 +31,11 @@ class Note extends Component {
   clickOnNote(){
     this.props.canvasActions.addCanvasData(this.props.note);
     this.props.editStateActions.changeState('edit');
+  }
+
+  clickOnDelete(event){
+    this.props.notesActions.deleteNote(this.props.note._id);
+    event.stopPropagation();
   }
 
   render() {
@@ -46,6 +52,7 @@ class Note extends Component {
               <FontAwesomeIcon
                 className="float-right pointer"
                 icon={faCircle}
+                onClick={this.clickOnDelete}
               />
             ) : null}
 
@@ -59,7 +66,8 @@ class Note extends Component {
 
 Note.propTypes = {
   canvasActions: PropTypes.object.isRequired,
-  editStateActions: PropTypes.object.isRequired
+  editStateActions: PropTypes.object.isRequired,
+  notesActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -69,7 +77,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     canvasActions: bindActionCreators(_canvasActions, dispatch),
-    editStateActions: bindActionCreators(_editStateActions, dispatch)
+    editStateActions: bindActionCreators(_editStateActions, dispatch),
+    notesActions: bindActionCreators(_notesActions, dispatch)
   };
 }
 

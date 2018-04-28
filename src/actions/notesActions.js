@@ -1,15 +1,73 @@
-export const ACTION_SAMPLE = 'ACTION_SAMPLE';
-export const EDIT_NOTE = 'EDIT_NOTE';
-export const INSERT_NOTE = 'INSERT_NOTE';
+import Datastore from 'nedb';
 
-export function getNotes(notes) {
-  return { type: ACTION_SAMPLE, notes: notes };
+export const GET_NOTES_SUCCESS = 'GET_NOTES_SUCCESS';
+export const EDIT_NOTE_SUCCESS = 'EDIT_NOTE_SUCCESS';
+export const INSERT_NOTE_SUCCESS = 'INSERT_NOTE_SUCCESS';
+export const DELETE_NOTE_SUCCESS = 'DELETE_NOTE_SUCCESS';
+
+const db = new Datastore({ filename: 'datasource/datafile', autoload: true });
+
+function getNotesSuccess(notes) {
+  return { type: GET_NOTES_SUCCESS, notes: notes };
 }
 
-export function editNote(note) {
-  return { type: EDIT_NOTE, note: note };
+function editNoteSuccess(note) {
+  return { type: EDIT_NOTE_SUCCESS, note: note };
 }
 
-export function insertNote(note) {
-  return { type: INSERT_NOTE, note: note };
+function insertNoteSuccess(note) {
+  return { type: INSERT_NOTE_SUCCESS, note: note };
+}
+
+function deleteNoteSuccess(note) {
+  return { type: INSERT_NOTE_SUCCESS, note: note };
+}
+
+export function getNotes() {
+  return dispatch => {
+    db.find({}, (err, docs) => {
+      console.log(docs);
+      dispatch(getNotesSuccess(docs));
+    });
+  };
+}
+
+export function insertNote(value) {
+  return dispatch => {
+    db.insert(
+      {
+        data: value
+      },
+      (err, newDocs) => {
+        db.find({}, (err, docs) => {
+          console.log(docs);
+          dispatch(getNotesSuccess(docs));
+        });
+      }
+    );
+  };
+}
+
+export function deleteNote(id) {
+  return dispatch => {
+    db.remove({ _id: id }, {}, (err, numRemoved) => {
+      console.log(numRemoved);
+      db.find({}, (err, docs) => {
+        console.log(docs);
+        dispatch(getNotesSuccess(docs));
+      });
+    });
+  };
+}
+
+export function editNote(id, value) {
+  return dispatch => {
+    db.update({ _id: id }, { data: value }, {}, function(err, numReplaced) {
+      console.log(numReplaced);
+      db.find({}, (err, docs) => {
+        console.log(docs);
+        dispatch(getNotesSuccess(docs));
+      });
+    });
+  };
 }

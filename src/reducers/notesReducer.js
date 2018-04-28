@@ -4,17 +4,15 @@ import initialState from '../initialState';
 export default function notesReducer(state = initialState.notes, action) {
   // still use this is use for testing
   switch (action.type) {
-    case types.ACTION_SAMPLE:
+    case types.GET_NOTES_SUCCESS:
+      console.log(action);
       return action.notes;
-    case types.EDIT_NOTE:
-      let notes = findAndReplace(state, action.note.id, action.note.data);
-      return notes;
-    case types.INSERT_NOTE:
-      console.log(action, state);
-      let newNotes = state;
-      newNotes.push({ id: action.note.id, data: action.note.data });
-      console.log(newNotes);
-      return newNotes;
+    case types.EDIT_NOTE_SUCCESS:
+      return action.notes;
+    case types.INSERT_NOTE_SUCCESS:
+      return action.notes;
+    case types.DELETE_NOTE_SUCCESS:
+      return action.notes;
     default:
       return state;
   }
