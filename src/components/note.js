@@ -1,10 +1,18 @@
-import React, { Component } from "react";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import faCircle from "@fortawesome/fontawesome-free-solid/faMinusCircle";
-import faWindowClose from "@fortawesome/fontawesome-free-solid/faWindowClose";
+import React, { Component } from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faCircle from '@fortawesome/fontawesome-free-solid/faMinusCircle';
+import faWindowClose from '@fortawesome/fontawesome-free-solid/faWindowClose';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  ContentState,
+  Editor,
+  EditorState,
+  RichUtils,
+  convertFromRaw
+} from 'draft-js';
+import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
 import * as _canvasActions from '../actions/canvasActions';
 import * as _editStateActions from '../actions/editStateActions';
@@ -13,8 +21,17 @@ import * as _notesActions from '../actions/notesActions';
 class Note extends Component {
   constructor(props, contect) {
     super(props);
+
+    let editorState;
+    console.log(this.props.note.data);
+
+    editorState = EditorState.createWithContent(
+      convertFromRaw(JSON.parse(this.props.note.data))
+    );
+
     this.state = {
-      isMouseInside: false
+      isMouseInside: false,
+      editorState: editorState
     };
 
     this.clickOnNote = this.clickOnNote.bind(this);
@@ -28,12 +45,12 @@ class Note extends Component {
     this.setState({ isMouseInside: false });
   };
 
-  clickOnNote(){
+  clickOnNote() {
     this.props.canvasActions.addCanvasData(this.props.note);
     this.props.editStateActions.changeState('edit');
   }
 
-  clickOnDelete(event){
+  clickOnDelete(event) {
     this.props.notesActions.deleteNote(this.props.note._id);
     event.stopPropagation();
   }
@@ -55,8 +72,7 @@ class Note extends Component {
                 onClick={this.clickOnDelete}
               />
             ) : null}
-
-            {this.props.note.data}
+            <Editor editorState={this.state.editorState} />
           </div>
         </div>
       </div>
@@ -83,4 +99,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Note);
-

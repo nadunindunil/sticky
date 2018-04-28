@@ -4,7 +4,8 @@ import {
   Editor,
   EditorState,
   RichUtils,
-  convertToRaw
+  convertToRaw,
+  convertFromRaw
 } from 'draft-js';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
@@ -14,31 +15,33 @@ import { connect } from 'react-redux';
 
 import * as _canvasActions from '../actions/canvasActions';
 
-
 class Canvas extends Component {
   constructor(props) {
     super(props);
     let editorState;
     console.log(this.props.canvasData);
-    if (this.props.canvasData && this.props.canvasData.trim() !== '') {
-      const processedHTML = DraftPasteProcessor.processHTML(
-        this.props.canvasData
+    
+    if (this.props.canvasData) {
+      editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(this.props.canvasData))
       );
-      const contentState = ContentState.createFromBlockArray(processedHTML);
-      //move focus to the end.
-      editorState = EditorState.createWithContent(contentState);
       editorState = EditorState.moveFocusToEnd(editorState);
     } else {
       editorState = EditorState.createEmpty();
       editorState = EditorState.moveFocusToEnd(editorState);
     }
     this.state = { editorState: editorState };
-    this.onChange = editorState => {
-      this.setState({ editorState });
-      // console.log(editorState);
-      this.props.canvasActions.changeCanvasData(editorState.getCurrentContent().getPlainText());
-    };
+
+    this.onChange = this.onChange.bind(this);
   }
+
+  onChange(editorState) {
+    this.setState({ editorState });
+    // console.log(editorState);
+    this.props.canvasActions.changeCanvasData(
+      JSON.stringify(convertToRaw(editorState.getCurrentContent()))
+    );
+  };
 
   render() {
     return (
@@ -66,5 +69,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
-export default connect(mapStateToProps,mapDispatchToProps)(Canvas);
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
