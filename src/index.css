@@ -5,6 +5,7 @@ body {
 }
 
 .btn-circle {
+  padding-left: 10px;
   width: 25px;
   height: 25px;
   text-align: center;
@@ -28,4 +29,8 @@ body {
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
+}
+
+.reduce-padding{
+  padding: 13px;
 }

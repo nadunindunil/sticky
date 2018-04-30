@@ -5,8 +5,8 @@ export function addCanvasData(note) {
   return { type: ADD_DATA, note: note };
 }
 
-export function changeCanvasData(data) {
-  return { type: CHANGE_CANVAS_DATA, data: data };
+export function changeCanvasData(note) {
+  return { type: CHANGE_CANVAS_DATA, note: note };
 }
 
 

@@ -5,6 +5,8 @@ const globalShortcut = electron.globalShortcut;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 const { Menu, Tray } = require('electron');
+// Auto Launch
+// const AutoLaunch = require('auto-launch');
 
 const ipc = electron.ipcMain;
 
@@ -37,7 +39,6 @@ function createWindow() {
       slashes: true
     });
 
-  console.log('test');
   mainWindow.setPosition(0, -100);
   mainWindow.loadURL(startUrl);
   // Open the DevTools.
@@ -51,13 +52,12 @@ function createWindow() {
     { label: 'Item4', type: 'radio' }
   ]);
 
-  tray.setToolTip('Notes app');
+  tray.setToolTip('Sticky App');
   //   tray.setContextMenu(contextMenu)
 
   mainWindow.hide();
 
   globalShortcut.register('CommandOrControl+down', () => {
-    console.log('inside');
 
     if (isShown) {
       mainWindow.hide();
@@ -70,6 +70,15 @@ function createWindow() {
 
   // globalShortcut.register("CommandOrControl", () => {
   //   mainWindow.webContents.send('message', {data: electron.clipboard.readText()});
+  // });
+
+  // Auto Launch
+  // let autoLaunch = new AutoLaunch({
+  //   name: 'Your app name goes here',
+  //   path: app.getPath('exe'),
+  // });
+  // autoLaunch.isEnabled().then((isEnabled) => {
+  //   if (!isEnabled) autoLaunch.enable();
   // });
 
   // Emitted when the window is closed.

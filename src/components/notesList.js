@@ -7,11 +7,10 @@ class NotesList extends Component {
   }
 
   render() {
-    console.log(this.props.notes);
     return (
-      <div>
+      <div className="scroller" id="style-1">
         {this.props.notes.map(note => (
-          <Note key={note._id} note={note} />
+          <Note key={note._id} note={note} searchFalse={this.props.searchFalse} />
         ))}
       </div>
     );

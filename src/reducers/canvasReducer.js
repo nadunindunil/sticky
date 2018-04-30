@@ -6,9 +6,7 @@ export default function canvasReducer(state = initialState.canvasData, action) {
     case types.ADD_DATA:
       return action.note;
     case types.CHANGE_CANVAS_DATA:
-      let newState = state;
-      newState.data = action.data;
-      return newState;
+      return action.note;
     default:
       return state;
   }

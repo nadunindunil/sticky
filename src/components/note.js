@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faCircle from '@fortawesome/fontawesome-free-solid/faMinusCircle';
-import faWindowClose from '@fortawesome/fontawesome-free-solid/faWindowClose';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  ContentState,
-  Editor,
   EditorState,
-  RichUtils,
   convertFromRaw
 } from 'draft-js';
-import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
 import * as _canvasActions from '../actions/canvasActions';
 import * as _editStateActions from '../actions/editStateActions';
@@ -23,7 +18,6 @@ class Note extends Component {
     super(props);
 
     let editorState;
-    console.log(this.props.note.data);
 
     editorState = EditorState.createWithContent(
       convertFromRaw(JSON.parse(this.props.note.data))
@@ -38,6 +32,18 @@ class Note extends Component {
     this.clickOnDelete = this.clickOnDelete.bind(this);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState){
+    if (nextProps.note){
+      let editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(nextProps.note.data))
+      );
+      return{editorState: editorState};
+    }
+    else {
+      return null;
+    }
+  }
+
   mouseEnter = () => {
     this.setState({ isMouseInside: true });
   };
@@ -45,9 +51,11 @@ class Note extends Component {
     this.setState({ isMouseInside: false });
   };
 
-  clickOnNote() {
+  clickOnNote(event) {
     this.props.canvasActions.addCanvasData(this.props.note);
     this.props.editStateActions.changeState('edit');
+    this.props.searchFalse();
+    event.preventDefault();
   }
 
   clickOnDelete(event) {
@@ -64,7 +72,7 @@ class Note extends Component {
           onMouseLeave={this.mouseLeave}
           onClick={this.clickOnNote}
         >
-          <div className="card-body grey-background">
+          <div className="reduce-padding card-body grey-background">
             {this.state.isMouseInside ? (
               <FontAwesomeIcon
                 className="float-right pointer"
@@ -72,7 +80,7 @@ class Note extends Component {
                 onClick={this.clickOnDelete}
               />
             ) : null}
-            <Editor editorState={this.state.editorState} />
+            {this.state.editorState.getCurrentContent().getPlainText()}
           </div>
         </div>
       </div>
