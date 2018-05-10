@@ -80,7 +80,7 @@ class Note extends Component {
                 onClick={this.clickOnDelete}
               />
             ) : null}
-            {this.state.editorState.getCurrentContent().getPlainText()}
+            {this.state.editorState.getCurrentContent().getPlainText().substring(0, 200)}
           </div>
         </div>
       </div>

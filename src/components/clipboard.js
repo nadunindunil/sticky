@@ -1,20 +1,37 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import ClipboardNote from './clipboardNote';
 
-const electron = window.require("electron");
-const clipboard = window.require("electron-clipboard-extended");
+import * as _canvasActions from '../actions/canvasActions';
+import * as _editStateActions from '../actions/editStateActions';
+import * as _notesActions from '../actions/notesActions';
 
-export default class AppClipboard extends Component {
+const electron = window.require('electron');
+const clipboard = window.require('electron-clipboard-extended');
+
+class AppClipboard extends Component {
   constructor(props, contect) {
     super(props);
     this.state = {
-      Value: electron.clipboard.readText()
+      Value: electron.clipboard.readText(),
+      clipboardArray: []
     };
+
+    this.clickOnAddToData = this.clickOnAddToData.bind(this);
   }
 
   componentDidMount() {
     clipboard
-      .on("text-changed", () => {
+      .on('text-changed', () => {
         let currentText = electron.clipboard.readText();
+        let newClipboardArray = this.state.clipboardArray;
+
+        newClipboardArray.push(currentText);
+        if (newClipboardArray.length > 4) {
+          newClipboardArray.shift();
+        }
+        this.setState({ clipboardArray: newClipboardArray });
         this.setState({ Value: currentText });
       })
       .startWatching();
@@ -24,6 +41,11 @@ export default class AppClipboard extends Component {
     clipboard.stopWatching();
   }
 
+  clickOnAddToData(value) {
+    // this.props.notesActions.insertNote(value);
+    // event.stopPropagation();
+  }
+
   render() {
     return (
       <div>
@@ -31,11 +53,28 @@ export default class AppClipboard extends Component {
           <h6 className="my-0 mr-md-auto font-weight-normal">Clipboard</h6>
         </div>
         <div className="container-fluid">
-          <div className="card">
-            <div className="card-body">{this.state.Value}</div>
+          <div className="scroller" id="style-1">
+            {this.state.clipboardArray
+              .slice(0)
+              .reverse()
+              .map((content, index) => <ClipboardNote content={content} key={index} />)}
           </div>
         </div>
       </div>
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return { notes: state.notes, canvasData: state.canvasData };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    canvasActions: bindActionCreators(_canvasActions, dispatch),
+    editStateActions: bindActionCreators(_editStateActions, dispatch),
+    notesActions: bindActionCreators(_notesActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppClipboard);

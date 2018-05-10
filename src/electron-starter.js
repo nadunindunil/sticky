@@ -24,7 +24,7 @@ function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     width: width,
-    height: 300,
+    height: 400,
     frame: false,
     resizable: false,
     skipTaskbar: true

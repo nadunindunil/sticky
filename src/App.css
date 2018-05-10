@@ -42,7 +42,7 @@
 
 .scroller {
   margin: 0 auto;
-  height: 250px;
+  height: 350px;
   overflow: auto;
   overflow-y:hidden;
 }

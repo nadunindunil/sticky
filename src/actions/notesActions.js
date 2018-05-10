@@ -5,7 +5,7 @@ export const EDIT_NOTE_SUCCESS = 'EDIT_NOTE_SUCCESS';
 export const INSERT_NOTE_SUCCESS = 'INSERT_NOTE_SUCCESS';
 export const DELETE_NOTE_SUCCESS = 'DELETE_NOTE_SUCCESS';
 
-const db = new Datastore({ filename: 'datasource/datafile', autoload: true });
+const db = new Datastore({ filename: 'datasource/datafile2', autoload: true });
 
 function getNotesSuccess(notes) {
   return { type: GET_NOTES_SUCCESS, notes: notes };

@@ -9,7 +9,6 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Canvas from './canvas';
-import Note from './note';
 import NotesList from './notesList';
 
 import * as _notesActions from '../actions/notesActions';
