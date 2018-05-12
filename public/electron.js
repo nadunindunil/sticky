@@ -4,7 +4,9 @@ const app = electron.app;
 const globalShortcut = electron.globalShortcut;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
-const { Menu, Tray } = require('electron');
+const { Menu, Tray, nativeImage } = require('electron');
+var platform = require('os').platform();
+
 // Auto Launch
 // const AutoLaunch = require('auto-launch');
 
@@ -43,7 +45,22 @@ function createWindow() {
   // Open the DevTools.
   //   mainWindow.webContents.openDevTools();
 
-  tray = new Tray('./iconSticky.png');
+  let iconPath;
+
+  // Determine appropriate icon for platform
+  if (platform == 'darwin') {
+    iconPath = './icon.png';
+  } else if (platform == 'win32') {
+    iconPath = './icon.ico';
+  }
+
+  let trayIcon = nativeImage.createFromPath(iconPath);
+  trayIcon = trayIcon.resize({ width: 16, height: 16 });
+  let tray = new Tray(trayIcon);
+
+  if (platform == 'darwin') {
+    tray.setPressedImage('./icon.png');
+  }
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Item1', type: 'radio' },
