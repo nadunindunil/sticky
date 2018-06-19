@@ -7,9 +7,20 @@ A simple note taking and clipboard managing desktop application made using
 - electron
 - draft.js 
 
-<img src="https://github.com/nadunindunil/sticky/blob/dev/gif/demo.gif?raw=true" width="800" height="400">
+
+<img src="https://github.com/nadunindunil/sticky/blob/dev/gif/demo.gif?raw=true" width="800" height="600">
 
 ### How to use
+
+Install sticky in your system and use `ctrl+down` whenever you want an assist from Sticky.
+
+### Functionalities
+
+- Sticky can show your clipboard and save a value if you want
+- create your shortnotes and edit, delete.
+- Rich text util comes with Draft.js
+- search your notes
+- Easy access with simple key bindings
 
 Install sticky in your system and use `ctrl+down` whenever you want an assist from Sticky.
 
