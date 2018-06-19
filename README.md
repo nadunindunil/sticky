@@ -7,6 +7,8 @@ A simple note taking and clipboard managing desktop application made using
 - electron
 - draft.js 
 
+<img src="https://github.com/nadunindunil/sticky/tree/dev/gif/demo.gif" width="800" height="400">
+
 ### How to use
 
 Install sticky in your system and use `ctrl+down` whenever you want an assist from Sticky.

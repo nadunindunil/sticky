@@ -52,6 +52,8 @@ function createWindow() {
     iconPath = path.join(__dirname, '/../assets/icon.png');
   } else if (platform == 'win32') {
     iconPath = path.join(__dirname, '/../assets/icon.ico');
+  }else{
+    iconPath = path.join(__dirname, '/../assets/icon.png');
   }
 
   // iconPath = path.join(__dirname, '/../assets/icon.png');

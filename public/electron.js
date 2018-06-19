@@ -52,6 +52,8 @@ function createWindow() {
     iconPath = './icon.png';
   } else if (platform == 'win32') {
     iconPath = './icon.ico';
+  } else if (platform == 'linux') {
+    iconPath = './icon.png';
   }
 
   let trayIcon = nativeImage.createFromPath(iconPath);
