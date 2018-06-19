@@ -1,5 +1,5 @@
 export default {
     notes: [],
-    canvasData: '',
+    canvasData: {_id: '' , data: ''},
     editState: 'idle'
 };

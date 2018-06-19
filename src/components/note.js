@@ -1,10 +1,13 @@
-import React, { Component } from "react";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import faCircle from "@fortawesome/fontawesome-free-solid/faMinusCircle";
-import faWindowClose from "@fortawesome/fontawesome-free-solid/faWindowClose";
+import React, { Component } from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faCircle from '@fortawesome/fontawesome-free-solid/faMinusCircle';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  EditorState,
+  convertFromRaw
+} from 'draft-js';
 
 import * as _canvasActions from '../actions/canvasActions';
 import * as _editStateActions from '../actions/editStateActions';
@@ -13,12 +16,32 @@ import * as _notesActions from '../actions/notesActions';
 class Note extends Component {
   constructor(props, contect) {
     super(props);
+
+    let editorState;
+
+    editorState = EditorState.createWithContent(
+      convertFromRaw(JSON.parse(this.props.note.data))
+    );
+
     this.state = {
-      isMouseInside: false
+      isMouseInside: false,
+      editorState: editorState
     };
 
     this.clickOnNote = this.clickOnNote.bind(this);
     this.clickOnDelete = this.clickOnDelete.bind(this);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState){
+    if (nextProps.note){
+      let editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(nextProps.note.data))
+      );
+      return{editorState: editorState};
+    }
+    else {
+      return null;
+    }
   }
 
   mouseEnter = () => {
@@ -28,12 +51,14 @@ class Note extends Component {
     this.setState({ isMouseInside: false });
   };
 
-  clickOnNote(){
+  clickOnNote(event) {
     this.props.canvasActions.addCanvasData(this.props.note);
     this.props.editStateActions.changeState('edit');
+    this.props.searchFalse();
+    event.preventDefault();
   }
 
-  clickOnDelete(event){
+  clickOnDelete(event) {
     this.props.notesActions.deleteNote(this.props.note._id);
     event.stopPropagation();
   }
@@ -47,7 +72,7 @@ class Note extends Component {
           onMouseLeave={this.mouseLeave}
           onClick={this.clickOnNote}
         >
-          <div className="card-body grey-background">
+          <div className="reduce-padding card-body grey-background">
             {this.state.isMouseInside ? (
               <FontAwesomeIcon
                 className="float-right pointer"
@@ -55,8 +80,7 @@ class Note extends Component {
                 onClick={this.clickOnDelete}
               />
             ) : null}
-
-            {this.props.note.data}
+            {this.state.editorState.getCurrentContent().getPlainText().substring(0, 200)}
           </div>
         </div>
       </div>
@@ -83,4 +107,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Note);
-

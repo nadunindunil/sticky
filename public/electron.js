@@ -43,26 +43,25 @@ function createWindow() {
   mainWindow.setPosition(0, -100);
   mainWindow.loadURL(startUrl);
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //   mainWindow.webContents.openDevTools();
 
   let iconPath;
 
   // Determine appropriate icon for platform
   if (platform == 'darwin') {
-    iconPath = path.join(__dirname, '/../assets/icon.png');
+    iconPath = './icon.png';
   } else if (platform == 'win32') {
-    iconPath = path.join(__dirname, '/../assets/icon.ico');
-  }else{
-    iconPath = path.join(__dirname, '/../assets/icon.png');
+    iconPath = './icon.ico';
+  } else if (platform == 'linux') {
+    iconPath = './icon.png';
   }
 
-  // iconPath = path.join(__dirname, '/../assets/icon.png');
   let trayIcon = nativeImage.createFromPath(iconPath);
   trayIcon = trayIcon.resize({ width: 16, height: 16 });
   let tray = new Tray(trayIcon);
 
   if (platform == 'darwin') {
-    tray.setPressedImage(path.join(__dirname, '/../assets/icon.png'));
+    tray.setPressedImage('./icon.png');
   }
 
   const contextMenu = Menu.buildFromTemplate([

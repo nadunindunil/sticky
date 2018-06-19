@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {
-  ContentState,
   Editor,
   EditorState,
   RichUtils,
-  convertToRaw
+  convertToRaw,
+  convertFromRaw
 } from 'draft-js';
-import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -14,31 +13,41 @@ import { connect } from 'react-redux';
 
 import * as _canvasActions from '../actions/canvasActions';
 
-
 class Canvas extends Component {
   constructor(props) {
     super(props);
     let editorState;
-    console.log(this.props.canvasData);
-    if (this.props.canvasData && this.props.canvasData.trim() !== '') {
-      const processedHTML = DraftPasteProcessor.processHTML(
-        this.props.canvasData
+    
+    if (this.props.canvasData.data) {
+      editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(this.props.canvasData.data))
       );
-      const contentState = ContentState.createFromBlockArray(processedHTML);
-      //move focus to the end.
-      editorState = EditorState.createWithContent(contentState);
       editorState = EditorState.moveFocusToEnd(editorState);
     } else {
       editorState = EditorState.createEmpty();
       editorState = EditorState.moveFocusToEnd(editorState);
     }
     this.state = { editorState: editorState };
-    this.onChange = editorState => {
-      this.setState({ editorState });
-      // console.log(editorState);
-      this.props.canvasActions.changeCanvasData(editorState.getCurrentContent().getPlainText());
-    };
+    
+    this.onChange = this.onChange.bind(this);
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
+
+  handleKeyCommand(command, editorState) {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+    if (newState) {
+      this.onChange(newState);
+      return 'handled';
+    }
+    return 'not-handled';
+  }
+
+  onChange(editorState) {
+    this.setState({ editorState });
+    this.props.canvasActions.changeCanvasData({ _id:this.props.canvasData._id,data:
+      JSON.stringify(convertToRaw(editorState.getCurrentContent()))
+  });
+  };
 
   render() {
     return (
@@ -48,6 +57,7 @@ class Canvas extends Component {
             <Editor
               editorState={this.state.editorState}
               onChange={this.onChange}
+              handleKeyCommand={this.handleKeyCommand}
             />
           </div>
         </div>
@@ -56,8 +66,13 @@ class Canvas extends Component {
   }
 }
 
+Canvas.propTypes = {
+  canvasActions: PropTypes.object.isRequired,
+  canvasData: PropTypes.object
+};
+
 function mapStateToProps(state, ownProps) {
-  return { canvasData: state.canvasData.data };
+  return { canvasData: state.canvasData };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -66,5 +81,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
-export default connect(mapStateToProps,mapDispatchToProps)(Canvas);
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
