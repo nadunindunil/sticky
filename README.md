@@ -7,7 +7,7 @@ A simple note taking and clipboard managing desktop application made using
 - electron
 - draft.js 
 
-<img src="https://github.com/nadunindunil/sticky/tree/dev/gif/demo.gif" width="800" height="400">
+<img src="https://github.com/nadunindunil/sticky/blob/dev/gif/demo.gif?raw=true" width="800" height="400">
 
 ### How to use
 
