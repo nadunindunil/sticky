@@ -8,7 +8,7 @@ A simple note taking and clipboard managing desktop application made using
 - draft.js 
 
 
-<img src="https://github.com/nadunindunil/sticky/blob/dev/gif/demo.gif?raw=true" width="800" height="600">
+<img src="https://github.com/nadunindunil/sticky/blob/dev/gif/demo.gif?raw=true" width="800" height="500">
 
 ### How to use
 
